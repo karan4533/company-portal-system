@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Functionality Test</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./assets/vendor/remixicon/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .console-output {
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            height: 200px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="mb-4">🧪 JavaScript Functionality Test Page</h1>
+        
+        <div class="row">
+            <div class="col-md-8">
+                
+                <!-- jQuery Test Section -->
+                <div class="test-section">
+                    <h3>✅ jQuery Test</h3>
+                    <p id="jquery-status">Testing jQuery...</p>
+                    <button id="jquery-test-btn" class="btn btn-primary">Test jQuery Methods</button>
+                </div>
+                
+                <!-- Popover Test Section -->
+                <div class="test-section">
+                    <h3>🎈 Popover Test</h3>
+                    <button id="popover-test" class="btn btn-info" data-toggle="popover" data-title="Test Popover" data-content="This is a test popover with custom content!">
+                        Trigger Popover
+                    </button>
+                    <button id="popover-manual" class="btn btn-secondary ms-2">Manual Popover</button>
+                </div>
+                
+                <!-- Tooltip Test Section -->
+                <div class="test-section">
+                    <h3>💬 Tooltip Test</h3>
+                    <button class="btn btn-warning" data-toggle="tooltip" title="This is a tooltip!">Hover for Tooltip</button>
+                    <span class="ms-2" data-toggle="tooltip" title="Icons can have tooltips too!">
+                        <i class="ri-information-line"></i>
+                    </span>
+                </div>
+                
+                <!-- Modal Test Section -->
+                <div class="test-section">
+                    <h3>🪟 Modal Test</h3>
+                    <button class="btn btn-success" data-toggle="modal" data-target="#testModal">Open Modal</button>
+                </div>
+                
+                <!-- Dropdown Test Section -->
+                <div class="test-section">
+                    <h3>⬇️ Dropdown Test</h3>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">
+                            Dropdown Menu
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Form Validation Test -->
+                <div class="test-section">
+                    <h3>📝 Form Validation Test</h3>
+                    <form id="test-form">
+                        <div class="mb-3">
+                            <label for="test-name" class="form-label">Name (Required)</label>
+                            <input type="text" class="form-control" id="test-name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="test-email" class="form-label">Email (Required)</label>
+                            <input type="email" class="form-control" id="test-email" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Test</button>
+                    </form>
+                </div>
+                
+                <!-- Slider Test Section -->
+                <div class="test-section">
+                    <h3>🎚️ Slider Test</h3>
+                    <label for="test-range" class="form-label">Test Range:</label>
+                    <input type="range" class="form-range" id="test-range" min="0" max="100" value="50">
+                    <span class="slider-value ms-2">50</span>
+                </div>
+                
+                <!-- Icons Test Section -->
+                <div class="test-section">
+                    <h3>🎨 Remix Icons Test</h3>
+                    <div>
+                        <i class="ri-home-line ri-2x me-2"></i>
+                        <i class="ri-user-line ri-2x me-2"></i>
+                        <i class="ri-settings-line ri-2x me-2"></i>
+                        <i class="ri-notification-line ri-2x me-2"></i>
+                        <i class="ri-calendar-line ri-2x me-2"></i>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- Console Output -->
+            <div class="col-md-4">
+                <h3>📊 Console Output</h3>
+                <div id="console-output" class="console-output"></div>
+                <button id="clear-console" class="btn btn-sm btn-outline-danger mt-2">Clear Console</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Test Modal -->
+    <div class="modal fade" id="testModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Test Modal</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>This is a test modal to verify modal functionality is working correctly.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Load Scripts in Correct Order -->
+    <script src="./assets/js/jquery.min.js"></script>
+    <script src="./assets/js/backend-bundle.min.js"></script>
+    <script src="./assets/js/table-treeview.js"></script>
+    <script src="./assets/js/slider.js"></script>
+    <script src="./assets/js/app.js"></script>
+    
+    <script>
+        // Console logging functionality
+        const consoleOutput = document.getElementById('console-output');
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+        
+        function addToConsole(message, type = 'log') {
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'text-danger' : type === 'warn' ? 'text-warning' : 'text-success';
+            consoleOutput.innerHTML += `<div class="${className}">[${timestamp}] ${message}</div>`;
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+        
+        console.log = function(...args) {
+            addToConsole(args.join(' '), 'log');
+            originalLog.apply(console, args);
+        };
+        
+        console.error = function(...args) {
+            addToConsole('ERROR: ' + args.join(' '), 'error');
+            originalError.apply(console, args);
+        };
+        
+        console.warn = function(...args) {
+            addToConsole('WARN: ' + args.join(' '), 'warn');
+            originalWarn.apply(console, args);
+        };
+        
+        document.getElementById('clear-console').addEventListener('click', function() {
+            consoleOutput.innerHTML = '';
+        });
+        
+        // Test functionality when DOM is ready
+        $(document).ready(function() {
+            console.log('🎯 DOM Ready - Starting JavaScript tests...');
+            
+            // jQuery Status Test
+            function updateJQueryStatus() {
+                const $status = $('#jquery-status');
+                if (typeof $ !== 'undefined' && typeof jQuery !== 'undefined') {
+                    $status.html('✅ jQuery loaded successfully! Version: ' + $.fn.jquery);
+                    $status.addClass('text-success');
+                    console.log('✅ jQuery version:', $.fn.jquery);
+                } else {
+                    $status.html('❌ jQuery not loaded');
+                    $status.addClass('text-danger');
+                    console.error('❌ jQuery not available');
+                }
+            }
+            
+            updateJQueryStatus();
+            
+            // jQuery method tests
+            $('#jquery-test-btn').click(function() {
+                console.log('🧪 Testing jQuery methods...');
+                
+                try {
+                    // Test basic jQuery functionality
+                    const $testDiv = $('<div>Test Element</div>');
+                    $testDiv.addClass('test-class').css('color', 'blue');
+                    console.log('✅ jQuery DOM manipulation works');
+                    
+                    // Test event handling
+                    $testDiv.on('click', function() {
+                        console.log('✅ jQuery event handling works');
+                    });
+                    
+                    console.log('✅ All jQuery tests passed!');
+                } catch (error) {
+                    console.error('❌ jQuery test failed:', error.message);
+                }
+            });
+            
+            // Initialize popovers
+            $('[data-toggle="popover"]').each(function() {
+                if (typeof $.fn.popover === 'function') {
+                    $(this).popover();
+                    console.log('✅ Popover initialized');
+                } else {
+                    console.warn('⚠️ Popover function not available');
+                }
+            });
+            
+            // Manual popover test
+            $('#popover-manual').click(function() {
+                if (typeof $.fn.popover === 'function') {
+                    $(this).popover({
+                        title: 'Manual Popover',
+                        content: 'This popover was created manually!',
+                        trigger: 'click'
+                    }).popover('show');
+                    console.log('✅ Manual popover created');
+                } else {
+                    console.warn('⚠️ Manual popover creation failed - function not available');
+                }
+            });
+            
+            // Initialize tooltips
+            $('[data-toggle="tooltip"]').each(function() {
+                if (typeof $.fn.tooltip === 'function') {
+                    $(this).tooltip();
+                    console.log('✅ Tooltip initialized');
+                } else {
+                    console.warn('⚠️ Tooltip function not available');
+                }
+            });
+            
+            // Test form validation
+            $('#test-form').on('submit', function(e) {
+                console.log('📝 Form validation triggered');
+                const name = $('#test-name').val();
+                const email = $('#test-email').val();
+                
+                if (!name || !email) {
+                    e.preventDefault();
+                    console.warn('⚠️ Form validation failed - missing required fields');
+                    alert('Please fill in all required fields');
+                } else {
+                    e.preventDefault(); // Prevent actual submission for demo
+                    console.log('✅ Form validation passed');
+                    alert('Form validation successful!');
+                }
+            });
+            
+            // Test slider functionality
+            $('#test-range').on('input change', function() {
+                const value = $(this).val();
+                $('.slider-value').text(value);
+                console.log('🎚️ Slider value changed to:', value);
+            });
+            
+            console.log('🎉 All initialization complete!');
+        });
+        
+        // Check for errors
+        window.addEventListener('error', function(e) {
+            console.error('❌ JavaScript Error:', e.message, 'at', e.filename + ':' + e.lineno);
+        });
+        
+        // Initial status message
+        addToConsole('🚀 Test page loaded successfully!', 'log');
+    </script>
+</body>
+</html>

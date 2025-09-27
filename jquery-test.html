@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery Load Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        .console-log {
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 jQuery Load Test</h1>
+    
+    <div id="jquery-status" class="status">Loading jQuery...</div>
+    <div id="backend-status" class="status">Testing Backend Bundle...</div>
+    <div id="scripts-status" class="status">Testing Other Scripts...</div>
+    
+    <h3>📜 Console Output:</h3>
+    <div id="console-output" class="console-log">Starting tests...\n</div>
+    
+    <script src="./assets/js/jquery.min.js"></script>
+    <script src="./assets/js/backend-bundle.min.js"></script>
+    <script src="./assets/js/table-treeview.js"></script>
+    <script src="./assets/js/slider.js"></script>
+    <script src="./assets/js/app.js"></script>
+    
+    <script>
+        const consoleOutput = document.getElementById('console-output');
+        const originalLog = console.log;
+        const originalError = console.error;
+        
+        function logToPage(message, type = 'log') {
+            const timestamp = new Date().toLocaleTimeString();
+            const prefix = type === 'error' ? '[ERROR]' : type === 'warn' ? '[WARN]' : '[INFO]';
+            consoleOutput.textContent += `${timestamp} ${prefix} ${message}\\n`;
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+        
+        console.log = function(...args) {
+            logToPage(args.join(' '), 'log');
+            originalLog.apply(console, args);
+        };
+        
+        console.error = function(...args) {
+            logToPage(args.join(' '), 'error');
+            originalError.apply(console, args);
+        };
+        
+        // Test jQuery loading
+        setTimeout(function() {
+            const jqueryStatus = document.getElementById('jquery-status');
+            const backendStatus = document.getElementById('backend-status');
+            const scriptsStatus = document.getElementById('scripts-status');
+            
+            if (typeof jQuery !== 'undefined' && typeof $ !== 'undefined') {
+                jqueryStatus.textContent = '✅ jQuery loaded successfully! Version: ' + jQuery.fn.jquery;
+                jqueryStatus.className = 'status success';
+                console.log('✅ jQuery test passed');
+                
+                // Test jQuery functionality
+                try {
+                    const testEl = $('<div>Test</div>');
+                    testEl.addClass('test').css('color', 'red');
+                    console.log('✅ jQuery DOM manipulation works');
+                    
+                    backendStatus.textContent = '✅ Backend bundle integration successful';
+                    backendStatus.className = 'status success';
+                } catch (error) {
+                    backendStatus.textContent = '❌ Backend bundle error: ' + error.message;
+                    backendStatus.className = 'status error';
+                    console.error('❌ Backend bundle test failed:', error.message);
+                }
+                
+                // Test other scripts
+                try {
+                    if (typeof window.tableTreeview !== 'undefined') {
+                        console.log('✅ Table treeview loaded');
+                    }
+                    if (typeof window.initSliders !== 'undefined') {
+                        console.log('✅ Slider functions loaded');
+                    }
+                    
+                    scriptsStatus.textContent = '✅ All scripts loaded without errors';
+                    scriptsStatus.className = 'status success';
+                } catch (error) {
+                    scriptsStatus.textContent = '❌ Script loading error: ' + error.message;
+                    scriptsStatus.className = 'status error';
+                    console.error('❌ Script test failed:', error.message);
+                }
+                
+            } else {
+                jqueryStatus.textContent = '❌ jQuery failed to load';
+                jqueryStatus.className = 'status error';
+                backendStatus.textContent = '❌ Cannot test - jQuery not available';
+                backendStatus.className = 'status error';
+                scriptsStatus.textContent = '❌ Cannot test - jQuery not available';
+                scriptsStatus.className = 'status error';
+                console.error('❌ jQuery not available');
+            }
+        }, 1000);
+        
+        // Catch any JavaScript errors
+        window.addEventListener('error', function(e) {
+            console.error('JavaScript Error:', e.message, 'at', e.filename + ':' + e.lineno);
+        });
+        
+        logToPage('Test page initialized', 'log');
+    </script>
+</body>
+</html>

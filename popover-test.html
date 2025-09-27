@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Popover Function Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        body.login-page {
+            background: linear-gradient(135deg, #ccd0e0 0%, #f5f1f8 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .console-output {
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            height: 150px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+        .warning { background-color: #fff3cd; color: #856404; }
+        .content-left {
+            background: linear-gradient(135deg, #e91e63 0%, #9c27b0 50%, #f9f7fc 100%) !important;
+            padding: 60px 40px !important;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 600px;
+            border-radius: 20px 0 0 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎈 Popover Function Test</h1>
+    
+    <div class="test-section">
+        <h3>Step-by-Step Test</h3>
+        <div id="step1" class="status warning">Step 1: Loading jQuery...</div>
+        <div id="step2" class="status warning">Step 2: Loading Backend Bundle...</div>
+        <div id="step3" class="status warning">Step 3: Testing Popover Function...</div>
+        <div id="step4" class="status warning">Step 4: Testing Manual Popover...</div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Manual Test Buttons</h3>
+        <button id="test-popover" class="btn btn-primary" data-toggle="popover" data-title="Test Title" data-content="This is test content!">
+            Test Popover (data attributes)
+        </button>
+        <button id="manual-popover" class="btn btn-secondary" style="margin-left: 10px;">
+            Manual Popover Test
+        </button>
+    </div>
+    
+    <div class="console-output" id="console-output">Starting popover tests...\n</div>
+    
+    <!-- Load scripts in order -->
+    <script src="./assets/js/jquery.min.js"></script>
+    <script src="./assets/js/backend-bundle.min.js"></script>
+    <script src="./assets/js/app.js"></script>
+    
+    <script>
+        const consoleOutput = document.getElementById('console-output');
+        
+        function logToConsole(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            consoleOutput.textContent += `[${timestamp}] ${message}\n`;
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+        
+        function updateStep(stepId, status, message) {
+            const element = document.getElementById(stepId);
+            element.textContent = message;
+            element.className = `status ${status}`;
+        }
+        
+        // Override console.log to capture messages
+        const originalLog = console.log;
+        console.log = function(...args) {
+            logToConsole(args.join(' '));
+            originalLog.apply(console, args);
+        };
+        
+        // Step 1: Check jQuery
+        setTimeout(function() {
+            if (typeof jQuery !== 'undefined' && typeof $ !== 'undefined') {
+                updateStep('step1', 'success', 'Step 1: ✅ jQuery loaded successfully');
+                logToConsole('✅ jQuery version: ' + jQuery.fn.jquery);
+                
+                // Step 2: Check Backend Bundle
+                setTimeout(function() {
+                    if (typeof window.backendBundleReady !== 'undefined') {
+                        updateStep('step2', 'success', 'Step 2: ✅ Backend Bundle ready');
+                        logToConsole('✅ Backend bundle ready flag detected');
+                        
+                        // Step 3: Check popover function
+                        setTimeout(function() {
+                            if (typeof $.fn.popover === 'function') {
+                                updateStep('step3', 'success', 'Step 3: ✅ Popover function available');
+                                logToConsole('✅ $.fn.popover function is available');
+                                
+                                // Test automatic initialization
+                                try {
+                                    $('#test-popover').popover();
+                                    updateStep('step4', 'success', 'Step 4: ✅ Popover initialization successful');
+                                    logToConsole('✅ Popover initialized successfully');
+                                } catch (error) {
+                                    updateStep('step4', 'error', 'Step 4: ❌ Popover initialization failed');
+                                    logToConsole('❌ Popover initialization error: ' + error.message);
+                                }
+                                
+                            } else {
+                                updateStep('step3', 'error', 'Step 3: ❌ Popover function not available');
+                                updateStep('step4', 'error', 'Step 4: ❌ Cannot test - function missing');
+                                logToConsole('❌ $.fn.popover is not a function');
+                            }
+                        }, 500);
+                        
+                    } else {
+                        updateStep('step2', 'error', 'Step 2: ❌ Backend Bundle not ready');
+                        updateStep('step3', 'error', 'Step 3: ❌ Cannot test - backend not ready');
+                        updateStep('step4', 'error', 'Step 4: ❌ Cannot test - backend not ready');
+                        logToConsole('❌ Backend bundle ready flag not found');
+                    }
+                }, 750);
+                
+            } else {
+                updateStep('step1', 'error', 'Step 1: ❌ jQuery not loaded');
+                updateStep('step2', 'error', 'Step 2: ❌ Cannot test - jQuery missing');
+                updateStep('step3', 'error', 'Step 3: ❌ Cannot test - jQuery missing');
+                updateStep('step4', 'error', 'Step 4: ❌ Cannot test - jQuery missing');
+                logToConsole('❌ jQuery not available');
+            }
+        }, 1000);
+        
+        // Manual test button
+        document.getElementById('manual-popover').addEventListener('click', function() {
+            logToConsole('🖱️ Manual popover button clicked');
+            
+            if (typeof $ !== 'undefined' && typeof $.fn.popover === 'function') {
+                try {
+                    $(this).popover({
+                        title: 'Manual Test',
+                        content: 'This popover was created manually via JavaScript!',
+                        trigger: 'click',
+                        placement: 'top'
+                    }).popover('show');
+                    
+                    logToConsole('✅ Manual popover created and shown');
+                } catch (error) {
+                    logToConsole('❌ Manual popover error: ' + error.message);
+                }
+            } else {
+                logToConsole('❌ Cannot create manual popover - function not available');
+                alert('Popover function not available. Check console for details.');
+            }
+        });
+        
+        // Listen for backend bundle ready event
+        window.addEventListener('backendBundleReady', function(event) {
+            logToConsole('🎉 Received backendBundleReady event');
+        });
+        
+        // Catch JavaScript errors
+        window.addEventListener('error', function(e) {
+            logToConsole('❌ JavaScript Error: ' + e.message + ' at ' + e.filename + ':' + e.lineno);
+        });
+        
+        logToConsole('🚀 Test page loaded, waiting for scripts...');
+    </script>
+</body>
+</html>

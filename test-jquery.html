@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery Test Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>jQuery Functionality Test</h1>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <h3>jQuery Status</h3>
+                <div id="jquery-status" class="alert alert-info">Checking jQuery...</div>
+                
+                <h3>Popover Test</h3>
+                <button id="popover-test" class="btn btn-primary" data-toggle="popover" data-content="This is a popover test!" data-title="Test Popover">
+                    Test Popover
+                </button>
+                
+                <h3 class="mt-3">Tooltip Test</h3>
+                <button class="btn btn-secondary" data-toggle="tooltip" title="This is a tooltip!">
+                    Hover for Tooltip
+                </button>
+                
+                <h3 class="mt-3">Form Test</h3>
+                <form id="test-form">
+                    <div class="mb-3">
+                        <input type="text" class="form-control" placeholder="Required field" required>
+                    </div>
+                    <button type="submit" class="btn btn-success">Submit Form</button>
+                </form>
+            </div>
+            
+            <div class="col-md-6">
+                <h3>Console Output</h3>
+                <div id="console-output" class="border p-3" style="height: 300px; overflow-y: auto; background: #f8f9fa;">
+                    <div>Initializing test...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load our JavaScript files in order -->
+    <script src="./assets/js/jquery.min.js"></script>
+    <script src="./assets/js/backend-bundle.min.js"></script>
+    <script src="./assets/js/app.js"></script>
+    
+    <script>
+        // Test script to verify functionality
+        $(document).ready(function() {
+            var consoleDiv = $('#console-output');
+            
+            function log(message, type = 'info') {
+                var timestamp = new Date().toLocaleTimeString();
+                var className = type === 'error' ? 'text-danger' : type === 'success' ? 'text-success' : 'text-info';
+                consoleDiv.append('<div class="' + className + '">[' + timestamp + '] ' + message + '</div>');
+                consoleDiv.scrollTop(consoleDiv[0].scrollHeight);
+            }
+            
+            // Test jQuery
+            if (typeof $ !== 'undefined' && typeof jQuery !== 'undefined') {
+                $('#jquery-status').removeClass('alert-info').addClass('alert-success').text('✅ jQuery is loaded and working!');
+                log('jQuery loaded successfully', 'success');
+            } else {
+                $('#jquery-status').removeClass('alert-info').addClass('alert-danger').text('❌ jQuery failed to load');
+                log('jQuery failed to load', 'error');
+            }
+            
+            // Test popover functionality
+            if (typeof $.fn.popover === 'function') {
+                $('#popover-test').popover();
+                log('Popover functionality available', 'success');
+            } else {
+                log('Popover functionality not available', 'error');
+            }
+            
+            // Test tooltip functionality
+            if (typeof $.fn.tooltip === 'function') {
+                $('[data-toggle="tooltip"]').tooltip();
+                log('Tooltip functionality available', 'success');
+            } else {
+                log('Tooltip functionality not available', 'error');
+            }
+            
+            // Test form handling
+            $('#test-form').on('submit', function(e) {
+                e.preventDefault();
+                log('Form submission intercepted - validation working!', 'success');
+            });
+            
+            log('All tests initialized', 'success');
+        });
+    </script>
+</body>
+</html>

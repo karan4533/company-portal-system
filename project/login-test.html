@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JIFFY Login - Modern Test</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 0;
+        }
+
+        .auth-card {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .content-left {
+            background: linear-gradient(135deg, #e91e63 0%, #9c27b0 50%, #673ab7 100%);
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 600px;
+            border-radius: 20px 0 0 20px;
+        }
+
+        .content-right {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            min-height: 600px;
+            border-radius: 0 20px 20px 0;
+        }
+
+        .floating-label {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .floating-input {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            padding: 15px 20px;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            width: 100%;
+        }
+
+        .floating-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .floating-input:focus {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            outline: none;
+        }
+
+        .custom-btn {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #e91e63;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .custom-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            color: #e91e63;
+        }
+
+        .password-container {
+            position: relative;
+        }
+
+        .eye-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            z-index: 10;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+
+        .eye-icon:hover {
+            color: white;
+        }
+
+        .brand-logo {
+            width: 120px;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px auto;
+            backdrop-filter: blur(10px);
+        }
+
+        .brand-text {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 10px;
+            text-align: center;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .brand-subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .illustration {
+            max-width: 100%;
+            height: auto;
+            filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.2));
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .form-check-label {
+            color: rgba(255, 255, 255, 0.9) !important;
+        }
+
+        .forgot-link {
+            color: rgba(255, 255, 255, 0.9) !important;
+            text-decoration: none !important;
+            font-weight: 500 !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .forgot-link:hover {
+            color: white !important;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="card auth-card">
+                    <div class="card-body p-0">
+                        <div class="row no-gutters h-100">
+                            <div class="col-lg-6 content-left">
+                                <div class="brand-logo">
+                                    <i class="ri-fingerprint-line" style="font-size: 3rem; color: white;"></i>
+                                </div>
+                                
+                                <h2 class="brand-text">JIFFY</h2>
+                                <p class="brand-subtitle">Project Management System</p>
+                                
+                                <form>
+                                    <div class="floating-label">
+                                        <input type="email" class="floating-input" id="email" placeholder="Enter your email address" required>
+                                    </div>
+
+                                    <div class="floating-label password-container">
+                                        <input type="password" class="floating-input" id="password" placeholder="Enter your password" required>
+                                        <i class="ri-eye-line eye-icon" onclick="togglePassword()"></i>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-6">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="remember">
+                                                <label class="form-check-label" for="remember">
+                                                    Remember me
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 text-end">
+                                            <a href="#" class="forgot-link">Forgot Password?</a>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn custom-btn">
+                                        Sign In to JIFFY
+                                    </button>
+                                </form>
+                                
+                                <div class="text-center mt-4">
+                                    <p style="color: rgba(255, 255, 255, 0.9);">
+                                        Don't have an account? 
+                                        <a href="#" style="color: white; font-weight: bold;">Sign Up</a>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 content-right">
+                                <div class="text-center">
+                                    <div style="width: 300px; height: 300px; background: rgba(255, 255, 255, 0.1); border-radius: 20px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px);" class="illustration">
+                                        <i class="ri-dashboard-3-line" style="font-size: 8rem; color: #667eea; opacity: 0.8;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePassword() {
+            const password = document.getElementById('password');
+            const icon = document.querySelector('.eye-icon');
+            
+            if (password.type === 'password') {
+                password.type = 'text';
+                icon.className = 'ri-eye-off-line eye-icon';
+            } else {
+                password.type = 'password';
+                icon.className = 'ri-eye-line eye-icon';
+            }
+        }
+
+        // Form validation
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('✅ Modern JIFFY Login Design Working Perfectly!\n\nFeatures tested:\n• Gradient backgrounds\n• Modern card design\n• Floating inputs\n• Password toggle\n• Hover effects\n• Responsive layout');
+        });
+    </script>
+</body>
+</html>

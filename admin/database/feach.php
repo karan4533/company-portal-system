@@ -154,6 +154,7 @@ class ProjectManager {
     
             if ($status == "shortlist") {
                 $MeetingLink = $_POST['meeting_link'];
+                $MeetingDateTime = $_POST['meeting_datetime']; // Add this line to get the meeting datetime
                 $InterviewerName = $name;                
                 $formattedDateTime = date('d-m-Y h:i A', strtotime($MeetingDateTime));
                 $Roles = $_POST['roles'];

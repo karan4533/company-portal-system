@@ -1,647 +1,386 @@
-/*
-Template: Webkit - Responsive Bootstrap 4 Admin Dashboard Template
-Author: iqonic.design
-Design and Developed by: iqonic.design
-NOTE: This file contains the styling for responsive Template.
-*/
-
-/*----------------------------------------------
-Index Of Script
-------------------------------------------------
-
-:: Tooltip
-:: Fixed Nav
-:: Magnific Popup
-:: Ripple Effect
-:: Sidebar Widget
-:: FullScreen
-:: Page Loader
-:: Counter
-:: Progress Bar
-:: Page Menu
-:: Close  navbar Toggle
-:: Mailbox
-:: chatuser
-:: chatuser main
-:: Chat start
-:: todo Page
-:: user toggle
-:: Data tables
-:: Form Validation
-:: Active Class for Pricing Table
-:: Flatpicker
-:: Scrollbar
-:: checkout
-:: Datatables
-:: image-upload
-:: video
-:: Button
-:: Pricing tab
-
-------------------------------------------------
-Index Of Script
-----------------------------------------------*/
-
-(function (jQuery) {
-  "use strict";
-
-  /*---------------------------------------------------------------------
-        Tooltip
-        -----------------------------------------------------------------------*/
-  jQuery('[data-toggle="popover"]').popover();
-  jQuery('[data-toggle="tooltip"]').tooltip();
-
-  /*---------------------------------------------------------------------
-        Fixed Nav
-        -----------------------------------------------------------------------*/
-
-  $(window).on("scroll", function () {
-    if ($(window).scrollTop() > 0) {
-      $(".iq-top-navbar").addClass("fixed");
-    } else {
-      $(".iq-top-navbar").removeClass("fixed");
-    }
-  });
-
-  $(window).on("scroll", function () {
-    if ($(window).scrollTop() > 0) {
-      $(".white-bg-menu").addClass("sticky-menu");
-    } else {
-      $(".white-bg-menu").removeClass("sticky-menu");
-    }
-  });
-
-  /*---------------------------------------------------------------------
-        Magnific Popup
-        -----------------------------------------------------------------------*/
-  if (typeof $.fn.magnificPopup !== typeof undefined) {
-    jQuery(".popup-gallery").magnificPopup({
-      delegate: "a.popup-img",
-      type: "image",
-      tLoading: "Loading image #%curr%...",
-      mainClass: "mfp-img-mobile",
-      gallery: {
-        enabled: true,
-        navigateByImgClick: true,
-        preload: [0, 1], // Will preload 0 - before current, and 1 after the current image
-      },
-      image: {
-        tError: '<a href="%url%">The image #%curr%</a> could not be loaded.',
-        titleSrc: function (item) {
-          return item.el.attr("title") + "<small>by Marsel Van Oosten</small>";
-        },
-      },
-    });
-    jQuery(".popup-youtube, .popup-vimeo, .popup-gmaps").magnificPopup({
-      disableOn: 700,
-      type: "iframe",
-      mainClass: "mfp-fade",
-      removalDelay: 160,
-      preloader: false,
-      fixedContentPos: false,
-    });
-  }
-
-  /*---------------------------------------------------------------------
-        Ripple Effect
-        -----------------------------------------------------------------------*/
-  jQuery(document).on("click", ".iq-waves-effect", function (e) {
-    // Remove any old one
-    jQuery(".ripple").remove();
-    // Setup
-    let posX = jQuery(this).offset().left,
-      posY = jQuery(this).offset().top,
-      buttonWidth = jQuery(this).width(),
-      buttonHeight = jQuery(this).height();
-
-    // Add the element
-    jQuery(this).prepend("<span class='ripple'></span>");
-
-    // Make it round!
-    if (buttonWidth >= buttonHeight) {
-      buttonHeight = buttonWidth;
-    } else {
-      buttonWidth = buttonHeight;
-    }
-
-    // Get the center of the element
-    let x = e.pageX - posX - buttonWidth / 2;
-    let y = e.pageY - posY - buttonHeight / 2;
-
-    // Add the ripples CSS and start the animation
-    jQuery(".ripple")
-      .css({
-        width: buttonWidth,
-        height: buttonHeight,
-        top: y + "px",
-        left: x + "px",
-      })
-      .addClass("rippleEffect");
-  });
-
-  /*---------------------------------------------------------------------
-        Sidebar Widget
-        -----------------------------------------------------------------------*/
-
-  jQuery(document).on("click", ".iq-menu > li > a", function () {
-    jQuery(".iq-menu > li > a").parent().removeClass("active");
-    jQuery(this).parent().addClass("active");
-  });
-
-  // Active menu
-  var parents = jQuery("li.active").parents(".iq-submenu.collapse");
-
-  parents.addClass("show");
-
-  parents.parents("li").addClass("active");
-  jQuery('li.active > a[aria-expanded="false"]').attr("aria-expanded", "true");
-
-  /*---------------------------------------------------------------------
-        FullScreen
-        -----------------------------------------------------------------------*/
-  jQuery(document).on("click", ".iq-full-screen", function () {
-    let elem = jQuery(this);
-    if (
-      !document.fullscreenElement &&
-      !document.mozFullScreenElement && // Mozilla
-      !document.webkitFullscreenElement && // Webkit-Browser
-      !document.msFullscreenElement
-    ) {
-      // MS IE ab version 11
-
-      if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen();
-      } else if (document.documentElement.mozRequestFullScreen) {
-        document.documentElement.mozRequestFullScreen();
-      } else if (document.documentElement.webkitRequestFullscreen) {
-        document.documentElement.webkitRequestFullscreen(
-          Element.ALLOW_KEYBOARD_INPUT
-        );
-      } else if (document.documentElement.msRequestFullscreen) {
-        document.documentElement.msRequestFullscreen(
-          Element.ALLOW_KEYBOARD_INPUT
-        );
-      }
-    } else {
-      if (document.cancelFullScreen) {
-        document.cancelFullScreen();
-      } else if (document.mozCancelFullScreen) {
-        document.mozCancelFullScreen();
-      } else if (document.webkitCancelFullScreen) {
-        document.webkitCancelFullScreen();
-      } else if (document.msExitFullscreen) {
-        document.msExitFullscreen();
-      }
-    }
-    elem
-      .find("i")
-      .toggleClass("ri-fullscreen-line")
-      .toggleClass("ri-fullscreen-exit-line");
-  });
-
-  /*---------------------------------------------------------------------
-        Page Loader
-        -----------------------------------------------------------------------*/
-  jQuery("#load").fadeOut();
-  jQuery("#loading").delay().fadeOut("");
-
-  /*---------------------------------------------------------------------
-        Counter
-        -----------------------------------------------------------------------*/
-  if (window.counterUp !== undefined) {
-    const counterUp = window.counterUp["default"];
-    const $counters = $(".counter");
-    $counters.each(function (ignore, counter) {
-      var waypoint = new Waypoint({
-        element: $(this),
-        handler: function () {
-          counterUp(counter, {
-            duration: 1000,
-            delay: 10,
-          });
-          this.destroy();
-        },
-        offset: "bottom-in-view",
-      });
-    });
-  }
-
-  /*---------------------------------------------------------------------
-        Progress Bar
-        -----------------------------------------------------------------------*/
-  jQuery(".iq-progress-bar > span").each(function () {
-    let progressBar = jQuery(this);
-    let width = jQuery(this).data("percent");
-    progressBar.css({
-      transition: "width 2s",
-    });
-
-    setTimeout(function () {
-      progressBar.appear(function () {
-        progressBar.css("width", width + "%");
-      });
-    }, 100);
-  });
-
-  jQuery(".progress-bar-vertical > span").each(function () {
-    let progressBar = jQuery(this);
-    let height = jQuery(this).data("percent");
-    progressBar.css({
-      transition: "height 2s",
-    });
-    setTimeout(function () {
-      progressBar.appear(function () {
-        progressBar.css("height", height + "%");
-      });
-    }, 100);
-  });
-
-  /*---------------------------------------------------------------------
-        Page Menu
-        -----------------------------------------------------------------------*/
-  jQuery(document).on("click", ".wrapper-menu", function () {
-    jQuery(this).toggleClass("open");
-  });
-
-  jQuery(document).on("click", ".wrapper-menu", function () {
-    jQuery("body").toggleClass("sidebar-main");
-  });
-
-  /*---------------------------------------------------------------------
-       Close  navbar Toggle
-       -----------------------------------------------------------------------*/
-
-  jQuery(".close-toggle").on("click", function () {
-    jQuery(".h-collapse.navbar-collapse").collapse("hide");
-  });
-
-  /*---------------------------------------------------------------------
-        Mailbox
-        -----------------------------------------------------------------------*/
-  jQuery(document).on("click", "ul.iq-email-sender-list li", function () {
-    jQuery(this).next().addClass("show");
-    // jQuery('.mail-box-detail').css('filter','blur(4px)');
-  });
-
-  jQuery(document).on("click", ".email-app-details li h4", function () {
-    jQuery(".email-app-details").removeClass("show");
-  });
-
-  /*---------------------------------------------------------------------
-        chatuser
-        -----------------------------------------------------------------------*/
-  jQuery(document).on("click", ".chat-head .chat-user-profile", function () {
-    jQuery(this).parent().next().toggleClass("show");
-  });
-  jQuery(document).on("click", ".user-profile .close-popup", function () {
-    jQuery(this).parent().parent().removeClass("show");
-  });
-
-  /*---------------------------------------------------------------------
-        chatuser main
-        -----------------------------------------------------------------------*/
-  jQuery(document).on("click", ".chat-search .chat-profile", function () {
-    jQuery(this).parent().next().toggleClass("show");
-  });
-  jQuery(document).on("click", ".user-profile .close-popup", function () {
-    jQuery(this).parent().parent().removeClass("show");
-  });
-
-  /*---------------------------------------------------------------------
-        Chat start
-        -----------------------------------------------------------------------*/
-  jQuery(document).on("click", "#chat-start", function () {
-    jQuery(".chat-data-left").toggleClass("show");
-  });
-  jQuery(document).on("click", ".close-btn-res", function () {
-    jQuery(".chat-data-left").removeClass("show");
-  });
-  jQuery(document).on("click", ".iq-chat-ui li", function () {
-    jQuery(".chat-data-left").removeClass("show");
-  });
-  jQuery(document).on("click", ".sidebar-toggle", function () {
-    jQuery(".chat-data-left").addClass("show");
-  });
-
-  /*---------------------------------------------------------------------
-        todo Page
-        -----------------------------------------------------------------------*/
-  jQuery(document).on("click", ".todo-task-list > li > a", function () {
-    jQuery(".todo-task-list li").removeClass("active");
-    jQuery(".todo-task-list .sub-task").removeClass("show");
-    jQuery(this).parent().toggleClass("active");
-    jQuery(this).next().toggleClass("show");
-  });
-  jQuery(document).on("click", ".todo-task-list > li li > a", function () {
-    jQuery(".todo-task-list li li").removeClass("active");
-    jQuery(this).parent().toggleClass("active");
-  });
-
-  /*---------------------------------------------------------------------
-        user toggle
-        -----------------------------------------------------------------------*/
-  jQuery(document).on("click", ".iq-user-toggle", function () {
-    jQuery(this).parent().addClass("show-data");
-  });
-
-  jQuery(document).on("click", ".close-data", function () {
-    jQuery(".iq-user-toggle").parent().removeClass("show-data");
-  });
-  jQuery(document).on("click", function (event) {
-    var $trigger = jQuery(".iq-user-toggle");
-    if ($trigger !== event.target && !$trigger.has(event.target).length) {
-      jQuery(".iq-user-toggle").parent().removeClass("show-data");
-    }
-  });
-  /*-------hide profile when scrolling--------*/
-  jQuery(window).scroll(function () {
-    let scroll = jQuery(window).scrollTop();
-    if (
-      scroll >= 10 &&
-      jQuery(".iq-user-toggle").parent().hasClass("show-data")
-    ) {
-      jQuery(".iq-user-toggle").parent().removeClass("show-data");
-    }
-  });
-  let Scrollbar = window.Scrollbar;
-  if (jQuery(".data-scrollbar").length) {
-    Scrollbar.init(document.querySelector(".data-scrollbar"), {
-      continuousScrolling: false,
-    });
-  }
-
-  /*---------------------------------------------------------------------
-        Data tables
-        -----------------------------------------------------------------------*/
-  if ($.fn.DataTable) {
-    $(".data-table").DataTable();
-  }
-
-  /*---------------------------------------------------------------------
-        Form Validation
-        -----------------------------------------------------------------------*/
-
-  // Example starter JavaScript for disabling form submissions if there are invalid fields
-  window.addEventListener(
-    "load",
-    function () {
-      // Fetch all the forms we want to apply custom Bootstrap validation styles to
-      var forms = document.getElementsByClassName("needs-validation");
-      // Loop over them and prevent submission
-      var validation = Array.prototype.filter.call(forms, function (form) {
-        form.addEventListener(
-          "submit",
-          function (event) {
-            if (form.checkValidity() === false) {
-              event.preventDefault();
-              event.stopPropagation();
-            }
-            form.classList.add("was-validated");
-          },
-          false
-        );
-      });
-    },
-    false
-  );
-
-  /*---------------------------------------------------------------------
-       Active Class for Pricing Table
-       -----------------------------------------------------------------------*/
-  jQuery("#my-table tr th").click(function () {
-    jQuery("#my-table tr th").children().removeClass("active");
-    jQuery(this).children().addClass("active");
-    jQuery("#my-table td").each(function () {
-      if (jQuery(this).hasClass("active")) {
-        jQuery(this).removeClass("active");
-      }
-    });
-    var col = jQuery(this).index();
-    jQuery("#my-table tr td:nth-child(" + parseInt(col + 1) + ")").addClass(
-      "active"
-    );
-  });
-
-  /*------------------------------------------------------------------
-        Select 2 Selectpicker
-        * -----------------------------------------------------------------*/
-
-  if ($.fn.select2 !== undefined) {
-    $("#single").select2({
-      placeholder: "Select a Option",
-      allowClear: true,
-    });
-    $("#multiple").select2({
-      placeholder: "Select a Multiple Option",
-      allowClear: true,
-    });
-    $("#multiple2").select2({
-      placeholder: "Select a Multiple Option",
-      allowClear: true,
-    });
-  }
-
-  /*------------------------------------------------------------------
-        Flatpicker
-        * -----------------------------------------------------------------*/
-  if (jQuery.fn.flatpickr !== undefined) {
-    if (jQuery(".basicFlatpickr").length > 0) {
-      jQuery(".basicFlatpickr").flatpickr();
-    }
-
-    if (jQuery("#inputTime").length > 0) {
-      jQuery("#inputTime").flatpickr({
-        enableTime: true,
-        noCalendar: true,
-        dateFormat: "H:i",
-      });
-    }
-    if (jQuery("#inputDatetime").length > 0) {
-      jQuery("#inputDatetime").flatpickr({
-        enableTime: true,
-      });
-    }
-    if (jQuery("#inputWeek").length > 0) {
-      jQuery("#inputWeek").flatpickr({
-        weekNumbers: true,
-      });
-    }
-    if (jQuery("#inline-date").length > 0) {
-      jQuery("#inline-date").flatpickr({
-        inline: true,
-      });
-    }
-    if (jQuery("#inline-date1").length > 0) {
-      jQuery("#inline-date1").flatpickr({
-        inline: true,
-      });
-    }
-  }
-
-  /*------------------------------------------------------------------
-        Flatpicker
-        * -----------------------------------------------------------------*/
-        if (jQuery('.date-input').hasClass('basicFlatpickr')) {
-            jQuery('.basicFlatpickr').flatpickr();
-            jQuery('#inputTime').flatpickr({
-              enableTime: true,
-              noCalendar: true,
-              dateFormat: "H:i",
-            });
-            jQuery('#inputDatetime').flatpickr({
-              enableTime: true
-            });
-            jQuery('#inputWeek').flatpickr({
-              weekNumbers: true
-            });
-            jQuery("#inline-date").flatpickr({
-                inline: true
-            });
-            jQuery("#inline-date1").flatpickr({
-                inline: true
-            });
-        }
-
-  /*---------------------------------------------------------------------
-        Scrollbar
-        -----------------------------------------------------------------------*/
-
-  jQuery(window)
-    .on("resize", function () {
-      if (jQuery(this).width() <= 1299) {
-        jQuery("#salon-scrollbar").addClass("data-scrollbar");
-      } else {
-        jQuery("#salon-scrollbar").removeClass("data-scrollbar");
-      }
-    })
-    .trigger("resize");
-
-  jQuery(".data-scrollbar").each(function () {
-    var attr = $(this).attr("data-scroll");
-    if (typeof attr !== typeof undefined && attr !== false) {
-      let Scrollbar = window.Scrollbar;
-      var a = jQuery(this).data("scroll");
-      Scrollbar.init(document.querySelector('div[data-scroll= "' + a + '"]'));
-    }
-  });
-
-  /*---------------------------------------------------------------------
-        Pricing tab
-        -----------------------------------------------------------------------*/
-  jQuery(window).on("scroll", function (e) {
-    // Pricing Pill Tab
-    var nav = jQuery("#pricing-pills-tab");
-    if (nav.length) {
-      var contentNav = nav.offset().top - window.outerHeight;
-      if (jQuery(window).scrollTop() >= contentNav) {
-        e.preventDefault();
-        jQuery("#pricing-pills-tab li a").removeClass("active");
-        jQuery("#pricing-pills-tab li a[aria-selected=true]").addClass(
-          "active"
-        );
-      }
-    }
-  });
-
-  /*---------------------------------------------------------------------
-        Sweet alt Delete
-        -----------------------------------------------------------------------*/
-  $('[data-extra-toggle="delete"]').on("click", function (e) {
-    const closestElem = $(this).attr("data-closest-elem");
-    const swalWithBootstrapButtons = Swal.mixin({
-      customClass: {
-        confirmButton: "btn btn-primary",
-        cancelButton: "btn btn-outline-primary ml-2",
-      },
-      buttonsStyling: false,
-    });
-
-    swalWithBootstrapButtons
-      .fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Yes, delete it!",
-        showClass: {
-          popup: "animate__animated animate__zoomIn",
-        },
-        hideClass: {
-          popup: "animate__animated animate__zoomOut",
-        },
-      })
-      .then((willDelete) => {
-        if (willDelete.isConfirmed) {
-          swalWithBootstrapButtons
-            .fire({
-              title: "Deleted!",
-              text: "Your note has been deleted.",
-              icon: "success",
-              showClass: {
-                popup: "animate__animated animate__zoomIn",
-              },
-              hideClass: {
-                popup: "animate__animated animate__zoomOut",
-              },
-            })
-            .then(() => {
-              if (closestElem == ".card") {
-                $(this).closest(closestElem).parent().remove();
-              } else {
-                $(this).closest(closestElem).remove();
-              }
-            });
-        } else {
-          swalWithBootstrapButtons.fire({
-            title: "Your note is safe!",
-            showClass: {
-              popup: "animate__animated animate__zoomIn",
-            },
-            hideClass: {
-              popup: "animate__animated animate__zoomOut",
-            },
-          });
-        }
-      });
-  });
-/*---------------------------------------------------------------------
-        Circle Progress
-  -----------------------------------------------------------------------*/
-  
-  const progressBar = document.getElementsByClassName('circle-progress')
-  Array.from(progressBar, (elem) => {
-      const minValue = elem.getAttribute('data-min-value')
-      const maxValue = elem.getAttribute('data-max-value')
-      const value = elem.getAttribute('data-value')
-      const  type = elem.getAttribute('data-type')
-      if (elem.getAttribute('id') !== '' && elem.getAttribute('id') !== null) {
-        new CircleProgress('#'+elem.getAttribute('id'), {
-          min: minValue,
-      max: maxValue,
-      value: value,
-      textFormat: type,
-      });
-      }
-  })
- 
-
-  
-
-  /*---------------------------------------------------------------------
-    List and Grid
-    -----------------------------------------------------------------------*/
-    $(document).on('click', '[data-toggle-extra="tab"]', function () {
-      const target = $(this).attr('data-target-extra')
-      $('[data-toggle-extra="tab-content"]').removeClass('active')
-      console.log($(target))
-      $(target).addClass('active')
-      $(this).parent().find('.active').removeClass('active')
-      $(this).addClass('active')
-    })
+﻿// Enhanced Admin Dashboard JavaScript with comprehensive jQuery support
+(function() {
+    'use strict';
     
-})(jQuery);
-
-
-
-
-
+    console.log('🚀 Admin Dashboard app.js loading...');
+    
+    // Wait for jQuery to be available
+    function waitForjQuery(callback) {
+        if (typeof window.jQuery !== 'undefined' && typeof window.$ !== 'undefined') {
+            callback();
+        } else {
+            setTimeout(function() { waitForjQuery(callback); }, 50);
+        }
+    }
+    
+    // Enhanced jQuery fallback with more methods
+    function ensureJQuery() {
+        if (typeof window.jQuery === 'undefined' || typeof window.$ === 'undefined') {
+            console.log('⚠️ jQuery not found, creating enhanced fallback...');
+            
+            // Create comprehensive jQuery-like object
+            var jQueryFallback = function(selector) {
+                if (typeof selector === 'function') {
+                    // Document ready handler
+                    if (document.readyState === 'loading') {
+                        document.addEventListener('DOMContentLoaded', selector);
+                    } else {
+                        selector();
+                    }
+                    return jQueryFallback;
+                }
+                
+                // Return fake jQuery object for chaining
+                var elements = selector ? document.querySelectorAll(selector) : [];
+                
+                return {
+                    length: elements.length,
+                    elements: elements,
+                    eq: function(index) { return this; },
+                    find: function() { return this; },
+                    addClass: function(className) { 
+                        Array.from(elements).forEach(el => el.classList.add(className)); 
+                        return this; 
+                    },
+                    removeClass: function(className) { 
+                        Array.from(elements).forEach(el => el.classList.remove(className)); 
+                        return this; 
+                    },
+                    toggleClass: function(className) {
+                        Array.from(elements).forEach(el => el.classList.toggle(className));
+                        return this;
+                    },
+                    hasClass: function(className) {
+                        return elements[0] ? elements[0].classList.contains(className) : false;
+                    },
+                    hide: function() { 
+                        Array.from(elements).forEach(el => el.style.display = 'none'); 
+                        return this; 
+                    },
+                    show: function() { 
+                        Array.from(elements).forEach(el => el.style.display = ''); 
+                        return this; 
+                    },
+                    fadeOut: function(callback) {
+                        Array.from(elements).forEach(el => {
+                            el.style.transition = 'opacity 0.3s';
+                            el.style.opacity = '0';
+                            setTimeout(() => {
+                                el.style.display = 'none';
+                                if (callback) callback.call(el);
+                            }, 300);
+                        });
+                        return this;
+                    },
+                    fadeIn: function() {
+                        Array.from(elements).forEach(el => {
+                            el.style.display = '';
+                            el.style.transition = 'opacity 0.3s';
+                            el.style.opacity = '1';
+                        });
+                        return this;
+                    },
+                    slideDown: function() {
+                        Array.from(elements).forEach(el => {
+                            el.style.display = '';
+                            el.style.overflow = 'hidden';
+                            el.style.height = '0';
+                            el.style.transition = 'height 0.3s';
+                            setTimeout(() => el.style.height = el.scrollHeight + 'px', 10);
+                        });
+                        return this;
+                    },
+                    slideUp: function() {
+                        Array.from(elements).forEach(el => {
+                            el.style.overflow = 'hidden';
+                            el.style.transition = 'height 0.3s';
+                            el.style.height = '0';
+                            setTimeout(() => el.style.display = 'none', 300);
+                        });
+                        return this;
+                    },
+                    toggle: function() {
+                        Array.from(elements).forEach(el => {
+                            el.style.display = el.style.display === 'none' ? '' : 'none';
+                        });
+                        return this;
+                    },
+                    val: function(value) {
+                        if (value === undefined) {
+                            return elements[0] ? elements[0].value : '';
+                        }
+                        Array.from(elements).forEach(el => el.value = value);
+                        return this;
+                    },
+                    text: function(text) {
+                        if (text === undefined) {
+                            return elements[0] ? elements[0].textContent : '';
+                        }
+                        Array.from(elements).forEach(el => el.textContent = text);
+                        return this;
+                    },
+                    html: function(html) {
+                        if (html === undefined) {
+                            return elements[0] ? elements[0].innerHTML : '';
+                        }
+                        Array.from(elements).forEach(el => el.innerHTML = html);
+                        return this;
+                    },
+                    attr: function(attr, value) {
+                        if (value === undefined) {
+                            return elements[0] ? elements[0].getAttribute(attr) : null;
+                        }
+                        Array.from(elements).forEach(el => el.setAttribute(attr, value));
+                        return this;
+                    },
+                    data: function(key, value) {
+                        if (value === undefined) {
+                            return elements[0] ? elements[0].dataset[key] : null;
+                        }
+                        Array.from(elements).forEach(el => el.dataset[key] = value);
+                        return this;
+                    },
+                    css: function(prop, value) {
+                        if (typeof prop === 'object') {
+                            Array.from(elements).forEach(el => {
+                                Object.keys(prop).forEach(key => {
+                                    el.style[key] = prop[key];
+                                });
+                            });
+                        } else if (value !== undefined) {
+                            Array.from(elements).forEach(el => el.style[prop] = value);
+                        }
+                        return this;
+                    },
+                    on: function(event, handler) {
+                        Array.from(elements).forEach(el => el.addEventListener(event, handler));
+                        return this;
+                    },
+                    off: function(event, handler) {
+                        Array.from(elements).forEach(el => el.removeEventListener(event, handler));
+                        return this;
+                    },
+                    click: function(handler) {
+                        if (handler) {
+                            return this.on('click', handler);
+                        } else {
+                            Array.from(elements).forEach(el => el.click());
+                            return this;
+                        }
+                    },
+                    submit: function(handler) {
+                        if (handler) {
+                            return this.on('submit', handler);
+                        } else {
+                            Array.from(elements).forEach(el => {
+                                if (el.tagName === 'FORM') el.submit();
+                            });
+                            return this;
+                        }
+                    },
+                    each: function(callback) {
+                        Array.from(elements).forEach((el, index) => callback.call(el, index, el));
+                        return this;
+                    },
+                    append: function(content) {
+                        Array.from(elements).forEach(el => {
+                            if (typeof content === 'string') {
+                                el.insertAdjacentHTML('beforeend', content);
+                            } else {
+                                el.appendChild(content);
+                            }
+                        });
+                        return this;
+                    },
+                    remove: function() {
+                        Array.from(elements).forEach(el => el.remove());
+                        return this;
+                    },
+                    parent: function() {
+                        var parents = Array.from(elements).map(el => el.parentElement).filter(Boolean);
+                        return jQueryFallback(parents);
+                    },
+                    next: function() {
+                        var nextElements = Array.from(elements).map(el => el.nextElementSibling).filter(Boolean);
+                        return jQueryFallback(nextElements);
+                    }
+                };
+            };
+            
+            // Add static methods
+            jQueryFallback.ready = function(fn) {
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', fn);
+                } else {
+                    fn();
+                }
+            };
+            
+            jQueryFallback.fn = {};
+            
+            window.jQuery = window.$ = jQueryFallback;
+            console.log('✅ Enhanced jQuery fallback installed');
+        }
+    }
+    
+    function initAdminDashboard() {
+        console.log('🎯 Initializing admin dashboard...');
+        
+        // Ensure jQuery is available
+        ensureJQuery();
+        
+        // Wait for backend bundle to be ready before initializing components
+        function initializeComponents() {
+            // Enhanced form validation with jQuery
+            $(document).ready(function() {
+                console.log('📋 Setting up form validation...');
+            
+            // Form validation
+            $('form').on('submit', function(e) {
+                var form = this;
+                var $form = $(form);
+                var requiredFields = $form.find('[required]');
+                var isValid = true;
+                
+                requiredFields.each(function() {
+                    var $field = $(this);
+                    if (!$field.val().trim()) {
+                        isValid = false;
+                        $field.css('border-color', '#dc3545');
+                    } else {
+                        $field.css('border-color', '#28a745');
+                    }
+                });
+                
+                if (!isValid) {
+                    e.preventDefault();
+                    alert('Please fill in all required fields');
+                    return false;
+                }
+            });
+            
+            // Auto-hide alerts
+            $('.alert').each(function() {
+                var $alert = $(this);
+                setTimeout(function() {
+                    $alert.fadeOut(function() {
+                        $alert.remove();
+                    });
+                }, 5000);
+            });
+            
+            // Initialize tooltips if present
+            $('[data-toggle="tooltip"]').each(function() {
+                if (typeof $.fn.tooltip === 'function') {
+                    $(this).tooltip();
+                } else {
+                    console.log('⚠️ Tooltip function not available, waiting for backend bundle...');
+                    // Wait a bit longer for backend bundle to load
+                    setTimeout(function() {
+                        if (typeof $.fn.tooltip === 'function') {
+                            $('[data-toggle="tooltip"]').tooltip();
+                            console.log('✅ Tooltips initialized after delay');
+                        }
+                    }, 500);
+                }
+            });
+            
+            // Initialize popovers if present
+            $('[data-toggle="popover"]').each(function() {
+                if (typeof $.fn.popover === 'function') {
+                    $(this).popover();
+                } else {
+                    console.log('⚠️ Popover function not available, waiting for backend bundle...');
+                    // Wait a bit longer for backend bundle to load
+                    setTimeout(function() {
+                        if (typeof $.fn.popover === 'function') {
+                            $('[data-toggle="popover"]').popover();
+                            console.log('✅ Popovers initialized after delay');
+                        }
+                    }, 500);
+                }
+            });
+            
+            // Handle dropdown toggles
+            $(document).on('click', '[data-toggle="dropdown"]', function(e) {
+                e.preventDefault();
+                var $toggle = $(this);
+                var $dropdown = $toggle.next('.dropdown-menu');
+                
+                // Close other dropdowns
+                $('.dropdown-menu').not($dropdown).hide().parent().removeClass('show');
+                
+                // Toggle current dropdown
+                $dropdown.toggle();
+                $toggle.parent().toggleClass('show');
+            });
+            
+            // Close dropdowns when clicking outside
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest('.dropdown').length) {
+                    $('.dropdown-menu').hide();
+                    $('.dropdown').removeClass('show');
+                }
+            });
+            
+            // Handle modal triggers
+            $(document).on('click', '[data-toggle="modal"]', function(e) {
+                e.preventDefault();
+                var target = $(this).attr('data-target') || $(this).attr('href');
+                if (target && $(target).length) {
+                    if (typeof $.fn.modal === 'function') {
+                        $(target).modal('show');
+                    } else {
+                        $(target).show().addClass('show');
+                        $('body').addClass('modal-open');
+                    }
+                }
+            });
+            
+            // Handle modal close
+            $(document).on('click', '[data-dismiss="modal"]', function(e) {
+                e.preventDefault();
+                var $modal = $(this).closest('.modal');
+                if (typeof $.fn.modal === 'function') {
+                    $modal.modal('hide');
+                } else {
+                    $modal.hide().removeClass('show');
+                    $('body').removeClass('modal-open');
+                }
+            });
+            
+            console.log('✅ Admin dashboard initialization complete');
+        });
+        
+        } // End of initializeComponents
+        
+        // Check if backend bundle is ready, if not wait for it
+        if (typeof window.backendBundleReady !== 'undefined' && window.backendBundleReady) {
+            initializeComponents();
+        } else {
+            console.log('⏳ Waiting for backend bundle to be ready...');
+            window.addEventListener('backendBundleReady', function() {
+                console.log('✅ Backend bundle ready, initializing components...');
+                initializeComponents();
+            });
+            
+            // Fallback: initialize after a delay even if event doesn't fire
+            setTimeout(function() {
+                if (!window.backendBundleReady) {
+                    console.log('⚠️ Backend bundle event timeout, initializing anyway...');
+                    initializeComponents();
+                }
+            }, 1000);
+        }
+    }
+    
+    // Initialize admin dashboard when jQuery is ready
+    waitForjQuery(function() {
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initAdminDashboard);
+        } else {
+            initAdminDashboard();
+        }
+    });
+    
+})()

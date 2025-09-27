@@ -19,7 +19,7 @@
     <!-- Vendor CSS Files -->
     <link href="assets2/vendor/aos/aos.css" rel="stylesheet">
     <link href="assets2/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets2/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <link href="assets2/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
     <link href="assets2/vendor/remixicon/remixicon.css" rel="stylesheet">
     <link href="assets2/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
